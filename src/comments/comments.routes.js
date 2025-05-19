@@ -8,7 +8,7 @@ import {
 const api = Router()
 
 api.post('/createComment', createComment)
-api.get('/getComments', getComments)
+api.get('/getComments/:postId', getComments)
 api.put('/updateComment/:id', updateComment)
 api.delete('/deleteComment/:id', deleteComment)
 
