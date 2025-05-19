@@ -4,12 +4,13 @@ export const createPost = async (req, res) => {
     try {
         const data = req.body
         const post = new Post(data)
-        await post.save()
+         const savedPost = await post.save()
 
         return res.status(201).send(
             {
                 success: true,
-                message: 'Post created successfully'
+                message: 'Post created successfully',
+                post: savedPost
                 
             }
         )
@@ -26,7 +27,11 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
     try {
-        const posts = await Post.find().populate('comments -_id')
+        const posts = await Post.find().populate({
+        path: 'comments',
+        select: '-_id'
+        });
+
 
         if (!posts) {
             return res.status(404).send(
