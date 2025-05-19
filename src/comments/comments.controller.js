@@ -26,13 +26,16 @@ export const createComment = async (req, res) => {
 
 export const getComments = async (req, res) => {
     try {
-        const comments = await Comment.find().populate({ path: 'post', select: '-_id -__v' })
+        const { postId } = req.params
+        const comments = await Comment.find({ post: postId }).populate({ path: 'post', select: '-_id -__v' })
+        //const comments = await Comment.find().populate({ path: 'post', select: '-_id -__v' })
 
         if (!comments) {
             return res.status(404).send(
                 {
                     success: false,
-                    message: 'No comments found'
+                    message: 'No comments found',
+                    comments
                 }
             )
         }
